@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Onest&display=swap');
+
+* {
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: 'Onest', sans-serif;
+  font-display: swap;
+}
+
+.homeDiv1 {
+  margin-top: 70px;
+}
+
+.skeleton1 {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  height: 200px; /* Set the height to 300px */
+  width: 100%; /* Adjust the width as needed */
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 20px;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  z-index: 9999;
+}
+
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-top: 5px solid black; /* Darker top border */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Spin animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card-body2 {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 20px;
+}
+
+.card-link {
+  transition: all 0.2s ease-in-out;
+  font-size: clamp(0.875rem, 0.8rem + 0.5vw, 1rem);
+  white-space: nowrap;
+  min-width: 120px;
+  text-align: center;
+  text-decoration: none;
+  color: gray;
+}
+
+.card-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.card-body2 a:nth-child(1) {
+  margin-left: 0;
+}
+
+.card-body2 a:nth-child(2) {
+  margin-left: 0;
+}
+
+/* For very small screens */
+@media (max-width: 800px) {
+  .card-link {
+    width: auto;
+    text-align: left;
+    font-size: clamp(0.875rem, 0.8rem + 0.5vw, 0.8rem);
+  }
+}
+
+/* For larger screens */
+@media (max-width: 350px) {
+  .card-link {
+    width: 100%;
+  }
+
+  .card-body2 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

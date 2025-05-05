@@ -1,0 +1,137 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/home.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid homeDiv1 border-0">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-12 text-center">
+					<h3>HOME</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 div2"></div>
+
+				<div class="col-12 col-sm-12 div2">
+					<div class="row row-cols-2 row-cols-md-5 g-3">
+						<% data.forEach(i => { %>
+						    <div class="col">
+						        <div class="card h-100">
+						            <div class="skeleton1"></div>
+						            <img data-src="<%= i.image %>" class="card-img-top" alt="image">
+						            <div class="card-body">
+						                <h5 class="card-title"><%= i.title %></h5>
+						                <p class="card-text d-none"><%= i.title %></p>
+						                <div class="d-flex justify-content-between align-items-center">
+						                    <a href="" class="card-link">Edit</a>
+
+						                    <a href="/v1/add2/?id=<%= i.id %>" class="card-link">Add Lessons</a>
+						                </div>
+						            </div>
+						            <div class="card-footer d-flex align-items-center justify-content-around">
+						                <small class="text-body-secondary">
+						                    <a href="/v1/edit/<%= i.id %>">
+						                        <i class="fa-solid fa-pen-to-square fa-lg" style="color: green;"></i>
+						                    </a>
+						                </small>
+						                <small class="text-body-secondary">
+						                    <button type="button" class="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal_<%= i.id %>">
+						                        <i class="fa-solid fa-trash fa-lg" style="color: red;"></i>
+						                    </button>
+
+						                    <!-- Modal -->
+						                    <div class="modal fade" id="exampleModal_<%= i.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						                        <div class="modal-dialog">
+						                            <div class="modal-content">
+						                                <div class="modal-header">
+						                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete?</h1>
+						                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						                                </div>
+						                                <div class="modal-footer">
+						                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						                                    <form action="/v1/delete" method="POST">
+						                                    	<input type="hidden" name="id" value="<%= i.id %>" />
+						                                    	<button type="submit" class="btn btn-primary">Continue</button>
+						                                    </form>
+						                                </div>
+						                            </div>
+						                        </div>
+						                    </div>
+						                </small>
+						            </div>
+						        </div>
+						    </div>
+						<% }) %>
+					</div>
+				</div>
+
+				<div class="col-12 col-sm-12" style="margin-top: 70px;">
+				    <nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+					        <li class="page-item <%= pgno == 1 ? 'disabled' : '' %>" id="prev-page">
+					            <a class="page-link" href="<%= pgno <= 1 ? '#' : '?pgno=' + (pgno - 1) %>">Previous</a>
+					        </li>
+					        <li class="page-item"><a class="page-link <%= pgno == 1 ? 'active' : '' %>" href="?pgno=1">1</a></li>
+					        <li class="page-item"><a class="page-link <%= pgno == 2 ? 'active' : '' %>" href="?pgno=2">2</a></li>
+					        <li class="page-item"><a class="page-link <%= pgno == 3 ? 'active' : '' %>" href="?pgno=3">3</a></li>
+					        <li class="page-item <%= pgno == totalCount ? 'disabled' : '' %>" id="next-page">
+					            <a class="page-link" href="<%= pgno == totalCount ? '#' : '?pgno=' + (pgno + 1) %>">Next</a>
+					        </li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+
+		const baseUrl = "https://edugarciamovimiento.com/fitness/uploads/";
+
+		const images2 = document.querySelectorAll('.card img');
+
+			images2.forEach(img => {
+                img.onload = () => {
+                    img.previousElementSibling.style.display = 'none'; // Hide skeleton
+                    img.style.display = 'block'; // Show image
+                };
+
+        		img.onerror = () => {
+			        // Hide the image
+			        img.style.display = 'none';
+			        
+			        // Show the skeleton loader
+			        const skeleton = img.previousElementSibling;
+			        if (skeleton) {
+			            skeleton.style.display = 'block';
+			        }
+			    };
+
+                const imgElement = img.getAttribute('data-src');
+                // console.log(imgElement); 
+                
+                img.setAttribute('src', baseUrl + imgElement); // Set src to trigger loading
+        	});
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

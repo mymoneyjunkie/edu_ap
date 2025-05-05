@@ -1,0 +1,136 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/home.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid moduleDiv1 border-0">
+			<div class="row justify-content-center">
+				<div class="col-12 text-center">
+				    <% if(errorMessage) { %>
+				        <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+				    <% } %>
+				</div>
+
+				<div class="col-12 col-sm-12 text-center">
+					<h3>TRENDING</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 div2"></div>
+
+				<div class="col-12 col-sm-12 div2">
+					<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
+						<% if (data.length >= 1) { %>
+							<% data.forEach(i => { %>
+							    <div class="col">
+							        <div class="card text-bg-dark h-100">
+							            <div class="skeleton1"></div>
+							            <img data-src="<%= i.image %>" class="card-img-top" alt="image">
+							            <div class="card-body">
+							                <p class="card-text"><%= i.title %></p>
+							            </div>
+
+							            <div class="card-body border-0 card-body2">
+											<a href="/v1/edit/<%= i.module_id %>" 
+												class="card-link border-0">
+												<i class="fa-solid fa-plus me-1"></i>
+												View Module
+											</a>
+										</div>
+							            
+							            <div class="card-footer d-flex align-items-center justify-content-around">
+							                <small class="text-body-secondary">
+							                    <a href="/v1/edit/<%= i.module_id %>">
+							                        <i class="fa-solid fa-pen-to-square fa-lg" style="color: green;"></i>
+							                    </a>
+							                </small>
+							                <small class="text-body-secondary">
+							                    <button type="button" class="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal_<%= i.trending_id %>">
+							                        <i class="fa-solid fa-trash fa-lg" style="color: red;"></i>
+							                    </button>
+
+							                    <!-- Modal -->
+							                    <div class="modal fade" id="exampleModal_<%= i.trending_id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							                        <div class="modal-dialog">
+							                            <div class="modal-content">
+							                                <div class="modal-header">
+							                                    <h1 class="modal-title fs-5 text-black" id="exampleModalLabel">Are you sure you want to delete?</h1>
+							                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							                                </div>
+							                                <div class="modal-footer">
+							                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							                                    <form action="/v1/deleteTrending" method="POST">
+							                                    	<input type="hidden" name="id" value="<%= i.trending_id %>" />
+							                                    	<button type="submit" class="btn btn-primary">Continue</button>
+							                                    </form>
+							                                </div>
+							                            </div>
+							                        </div>
+							                    </div>
+							                </small>
+							            </div>
+							        </div>
+							    </div>
+							<% }) %>
+						<% } else { %>
+							<div class="col w-100 border-0 text-center">
+								<h3 class="text-center mt-3">No Data Found... Try Adding something to trending</h3>
+							</div>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+
+		const baseUrl = "https://api.edugarciamovimiento.com/fitness/uploads/";
+
+		const images2 = document.querySelectorAll('.card img');
+
+			images2.forEach(img => {
+                img.onload = () => {
+                    img.previousElementSibling.style.display = 'none'; // Hide skeleton
+                    img.style.display = 'block'; // Show image
+                };
+
+        		img.onerror = () => {
+			        // Hide the image
+			        img.style.display = 'none';
+			        
+			        // Show the skeleton loader
+			        const skeleton = img.previousElementSibling;
+			        if (skeleton) {
+			            skeleton.style.display = 'block';
+			        }
+			    };
+
+                const imgElement = img.getAttribute('data-src');
+                // console.log(imgElement); 
+                
+                img.setAttribute('src', baseUrl + imgElement); // Set src to trigger loading
+        	});
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

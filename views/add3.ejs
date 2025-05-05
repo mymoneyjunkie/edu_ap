@@ -1,0 +1,79 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/add.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid addDiv1 border-0">
+			<div class="row">
+				<div class="col-12 text-center">
+		      <% if(errorMessage) { %>
+		        <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		      <% } %>
+		    </div>
+
+				<div class="col-12 col-sm-12 mb-3 text-center">
+					<h3>ADD Lessons</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+
+				<div class="col-12 col-sm-12 col-lg-8">
+					<form action="/v1/<% if(editing) { %>sedit<% } else { %>add2<% } %>" method="POST">
+
+						<% if (count == 0 || count < 1) { %>
+							<h3 class="heading1 mt-2 mb-5">No lessons found... Click on Add New Lesson</h3>
+						<% } %>
+							<div class="part_one" id="part_one_template">
+							</div>
+
+							<div class="mt-2 mb-5">
+								<button type="button" class="btn btn-secondary add_more_btn">
+									Add New Lesson
+								</button>
+							</div>
+
+							<input type="hidden" name="id" value="<%= oldInput.id %>" />
+							<% if(editing) { %>
+								<input type="hidden" name="sid" value="<%= oldInput.sid %>" />
+							<% } %>
+
+							<div class="mt-5 mb-5">
+								<button type="submit" class="btn btn-primary me-5" id="subBtn">
+									Submit
+								</button>
+							</div>
+					</form>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		let dataArray = '<%= JSON.stringify(oldInput) %>';
+		let count = <%= count %>;
+		dataArray = dataArray.replace(/[\t\r\n]+/g, ' ');
+
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+	</script>
+
+	<script src="/script1.js"></script>
+
+</body>
+
+<%- include("./includes/end.ejs"); %>

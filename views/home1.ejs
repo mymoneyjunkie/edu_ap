@@ -1,0 +1,88 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/home.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid homeDiv1 border-0">
+			<div class="row justify-content-center">
+				<div class="col-12 text-center">
+			      <% if(errorMessage) { %>
+			       	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+			      <% } %>
+			    </div>
+		    
+				<div class="col-12 col-sm-12 text-center border-0">
+					<h3>HOME</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 div2 border-0">
+					<div class="row">
+						<div class="col-12 col-md-4 w-100">
+							<% if (category !== 0) { %>
+								<a href="/v1/category">
+									<h4>Category</h4>
+									<hr />
+									<h4><%= category %></h4>
+								</a>
+							<% } else { %>
+								<a href="/v1/category">
+									<h4>No data found...</h4>
+								</a>
+							<% } %>
+						</div>
+
+						<div class="col-12 col-md-4 w-100">
+							<% if (module !== 0) { %>
+								<a href="#">
+									<h4>Modules</h4>
+									<hr />
+									<h4><%= module %></h4>
+								</a>
+							<% } else { %>
+								<a href="#">
+									<h4>No data found...</h4>
+								</a>
+							<% } %>
+						</div>
+
+						<div class="col-12 col-md-4 w-100">
+							<% if (lesson !== 0) { %>
+								<a href="#">
+									<h4>Lessons</h4>
+									<hr />
+									<h4><%= lesson %></h4>
+								</a>
+							<% } else { %>
+								<a href="#">
+									<h4>No data found...</h4>
+								</a>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		setTimeout(function() {
+		    const loadingSpinner = document.getElementById('loadingSpinner');
+		    loadingSpinner.style.display = 'none';
+		}, 2000);
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

@@ -1,0 +1,127 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/add.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid addDiv1 border-0">
+			<div class="row">
+				<div class="col-12 text-center">
+		      <% if(errorMessage) { %>
+		       	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		      <% } %>
+		    </div>
+
+				<div class="col-12 col-sm-12 mb-3 text-center">
+					<h3><%= (editing == false) ? 'ADD' : 'EDIT' %> PLAN</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+
+				<div class="col-12 col-sm-12 col-lg-8">
+					<form action="/v1/<% if(editing) { %>edit_plans<% } else { %>add_plan<% } %>" method="POST">
+						<!-- name -->
+						<div class="mb-3">
+							<label for="exampleInputTitle" class="form-label">Plan Name</label>
+							<input 
+								type="text" 
+								class="form-control" 
+								id="exampleInputName" 
+								name="productName" 
+								placeholder="e.g., gold plan"
+								value="<%= oldInput.name %>"
+							>
+						</div>
+
+						<!-- description -->
+						<div class="mb-3">
+							<label for="exampleFormControlTextarea" class="form-label">Plan Description</label>
+							<textarea 
+								class="form-control" 
+								id="exampleFormControlTextarea" 
+								name="productDescription" 
+								rows="3"
+							>
+								<%= oldInput.description.trim() %>
+							</textarea>
+						</div>
+
+						<!-- price -->
+						<div class="mb-3">
+						  <label for="exampleFormControlPrice" class="form-label">Price</label>
+						  <input type="number" class="form-control" name="priceAmount" id="exampleFormControlPrice" placeholder="0.00" 
+						  value="<%= oldInput.unit_amount %>" <% if (editing) { %>readonly<% } %>>
+						</div>
+
+						<!-- duration -->
+						<div class="mb-3">
+							<label for="exampleFormControlDuration" class="form-label">Plan Duration</label>
+						  <select class="form-select" id="exampleFormControlDuration" aria-label="Default select example" name="interval" <% if (editing) { %>disabled<% } %>>
+							  <option value="day" <% if (oldInput.interval === 'day') { %>selected<% } %>>Day</option>
+							  <option value="week" <% if (oldInput.interval === 'week') { %>selected<% } %>>Week</option>
+							  <option value="month" <% if (oldInput.interval === 'month') { %>selected<% } %>>Month</option>
+							  <option value="year" <% if (oldInput.interval === 'year') { %>selected<% } %>>Year</option>
+							</select>
+						</div>
+
+						<!-- count -->
+						<div class="mb-3">
+						  <label for="exampleFormControlCount" class="form-label">Duration Count</label>
+						  <input type="number" class="form-control" name="interval_count" id="exampleFormControlCount" placeholder="0" 
+						  value="<%= oldInput.interval_count %>" <% if (editing) { %>readonly<% } %>>
+						</div>
+
+						<!-- currency -->
+						<div class="mb-3">
+						  <label for="exampleFormControlCurrency" class="form-label">Currency</label>
+						  <input type="text" class="form-control" id="exampleFormControlCurrency" value="USD" readonly>
+						</div>
+
+						<% if(editing) { %>
+							<input type="hidden" name="prod_id" value="<%= oldInput.prod_id %>" />
+							<input type="hidden" name="price_id" value="<%= oldInput.price_id %>" />
+						<% } %>
+
+						<div class="mt-5 mb-5">
+							<button type="submit" class="btn btn-primary me-5" id="subBtn">
+								Submit
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		let dataArray = '<%= JSON.stringify(oldInput) %>';
+		dataArray = dataArray.replace(/[\t\r\n]+/g, ' ');
+
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+
+	    const descriptionContainer1 = document.getElementById('exampleFormControlTextarea');
+
+	    // console.log(descriptionContainer1.innerHTML.trim());
+
+      const descriptionLines1 = descriptionContainer1.innerHTML.trim();
+
+      descriptionContainer1.textContent = descriptionLines1;
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

@@ -1,0 +1,107 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/home.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid homeDiv1 border-0">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-12 text-center">
+					<h3>PLANS</h3>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<% if (data.length > 0) { %>
+			<div class="container-fluid border-0 mt-3 pe-4 ps-5">
+				<div class="row row-cols-1 row-cols-lg-4 row-cols-md-3 g-4">
+					<% data.forEach(i => { %>
+						<div class="col">
+							<div class="card h-100">
+							  	<div class="card-body bg-primary" style="border-radius: 6px;">
+								    <h5 class="card-title text-white"><%= i.name %></h5>
+								    <p class="card-text text-white" style="font-weight: 600;">$<%= parseFloat(i.amount) / 100 %></p>
+								</div>
+							   	<ul class="list-group list-group-flush mt-3 border-0">
+									<li class="list-group-item">
+										<span>Description</span>
+										<br />
+										<small class="text-body-secondary">
+											<%= i.description %>
+										</small>
+							   		</li>
+									<li class="list-group-item">
+									    <small class="text-body-secondary">Monthly Price(USD)</small> <br />
+									    <b>
+										   	<sup class="border-0 p-0" style="font-size: 10px;">
+										    	$
+										    </sup>
+										    <span class="p-0"><%= parseFloat(i.amount) / 100 %></span>
+									   	</b>
+									</li>
+									<li class="list-group-item">
+									    <small class="text-body-secondary">Duration</small> <br />
+									    <b>
+										    <span class="p-0"><%= i.interval_count %> <%= i.interval %></span>
+									   	</b>
+									</li>
+									<li class="list-group-item">
+										<small class="text-body-secondary">Resolution</small> <br />
+										<b>720p HD</b>
+									</li>
+									<li class="list-group-item">
+										<small class="text-body-secondary">Watch on Your Laptop, TV, Phone</small> <br />
+										✔
+									</li>
+									<li class="list-group-item">
+										<small class="text-body-secondary">Easy Change or Cancel</small> <br />
+										✔
+									</li>
+									<li class="list-group-item">
+										<small class="text-body-secondary">Downloads</small> <br />
+										✔
+									</li>
+									<li class="list-group-item">
+										<small class="text-body-secondary">ADS</small> <br />
+										<span style="color: red; font-weight: bold;">X</span>
+									</li>
+								</ul>
+							  	<div class="card-footer d-flex align-items-center justify-content-around">
+							  		<a href="/v1/edit_plans/<%= i.id %>" class="btn">
+							    		<i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+							    	</a>
+							  	</div>
+							</div>
+						</div>
+					<% }) %>
+				</div>
+			</div>
+		<% } %>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

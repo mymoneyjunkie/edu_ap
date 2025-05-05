@@ -1,0 +1,685 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/add.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid addDiv1 border-0">
+			<div class="row">
+				<div class="col-12 text-center">
+		      <% if(errorMessage) { %>
+		       	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		      <% } %>
+		    </div>
+
+				<div class="col-12 col-sm-12 mb-4 text-center">
+					<h3>ADD Modules</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-1"></div>
+
+				<div class="col-12 col-sm-12 col-lg-10">
+					<form 
+						action="/v1/<% if(editing) { %>edit<% } else { %>add<% } %>" 
+						method="POST"
+						onkeydown="return event.key != 'Enter'"
+					>
+						<div class="add_div3 p-2 border">
+							<div class="col-12 col-sm-12 col-md-8 p-3">
+								<!-- title -->
+								<div class="mb-3">
+									<label for="exampleFormControlTextarea" class="form-label">Title</label>
+									<textarea 
+										class="form-control desc_box" 
+										id="exampleFormControlTextarea" 
+										name="title" 
+										rows="3"
+									>
+										<%= oldInput.title %>
+									</textarea>
+								</div>
+
+								<!-- description -->
+								<div class="mb-3">
+									<label for="exampleFormControlDescription" class="form-label">Description</label>
+									<textarea 
+										class="form-control desc_box" 
+										id="exampleFormControlDescription" 
+										name="description" 
+										rows="3"
+									>
+										<%= oldInput.description %>
+									</textarea>
+								</div>
+
+								<!-- portrait image -->
+								<div class="mb-3" id="portrait_div">
+									<div style="display: none;">
+									    <label for="formFilep" class="form-label">Image</label>
+									    <div>
+									    	<img src="" class="img-thumbnail" alt="..." width="300" height="300" id="portImg" loading="lazy">
+									    </div>
+									</div>
+									<div>
+									    <label for="formFile" class="form-label">Image</label>
+									    <input class="form-control" type="file" id="formFileP" accept="image/*">
+									    <input type="hidden" name="portrait_image" id="formNameFileP" 
+									    value="<%= oldInput.portrait_image %>">
+									</div>
+									<div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex align-items-center justify-content-between">
+									    <button type="button" class="btn upload-Pimage-btn border-0">
+									        <i class="fa-solid fa-cloud-arrow-up"></i>
+									    </button>
+						    			<button type="button" class="btn delete-P-button">
+									        <i class="fa-solid fa-trash" style="color: red;"></i>
+									    </button>
+									    <div id="spinner_subP" class="spinner-border" role="status" style="display: none;">
+									        <span class="sr-only">Loading...</span>
+									    </div>
+									</div>
+								</div>
+
+								<!-- video -->
+								<div class="mb-3" id="v_div">
+									<div class="col-12">
+										<label for="videoFor" class="form-label">Video</label>
+									</div>
+									<div id="up_vid_div" style="display: none;">UPLOADED</div>
+									<div class="col-12 col-sm-6 col-md-8 col-lg-5 border text-sm-center p-0" id="embed-responsive" style="display: none;">
+									    <div class="embed-responsive embed-responsive-16by9">
+									      	<video 
+									      		src="" 
+									      		class="videoDiv object-fit-contain" controls autoplay muted name="media">
+									      	</video>
+									    </div>
+									</div>
+									<div class="col-12 col-sm-6 col-md-8 col-lg-5 video-uploader" id="video-uploader">
+									    <label class="file-label" for="movieFile" id="fileLabel">
+									      <i class="fa-solid fa-file-video"></i> Choose Video
+									    </label>
+									    <input type="file" id="movieFile" class="file-input" accept="video/*" />
+									    <input type="hidden" class="border-0" id="episode_Id" value="">
+									    <input type="hidden" id="fileCode" name="fileCode" class="custom-file-input" value="<%= oldInput.fileCode %>">
+									    <span id="file_name" name="file_name" class="file-name">No file chosen</span>
+									</div>
+									<div class="col-12 col-sm-6 col-md-4 col-lg-5 text-start d-flex justify-content-between align-items-center" style="word-wrap: break-word;">
+									    <p class="text-break"></p>
+									</div>
+									<div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex justify-content-between">
+									    <div id="spinner" class="spinner-border" role="status" style="display: none;">
+									      <span class="sr-only">Loading...</span>
+									    </div>
+									    <button type="button" class="btn upload-button border-0">
+									      <i class="fa-solid fa-cloud-arrow-up"></i>
+									    </button>
+						    			<button type="button" class="btn delete-button">
+											<i class="fa-solid fa-trash" style="color: red;"></i>
+										</button>
+									    <!-- Subtitle Button -->
+									    <button type="button" class="btn subtitle-button border-0 d-none" data-tvshow-id="">
+									      <i class="fa-solid fa-closed-captioning"></i>
+									    </button>
+									</div>
+								</div>
+
+								<div id="progress-container" style="display: none;">
+									<label for="upload-progress">Upload Progress:</label>
+									<progress id="upload-progress" value="0" max="100"></progress>
+									<span id="progress-text">0%</span>
+								</div>
+
+								<input type="hidden" name="video_length" 
+								id="video_length" value="<%= oldInput.video_length %>" />
+
+								<!-- <video id="myVideo" src="" controls autoplay muted name="media">
+								</video> -->
+
+								<% if(editing) { %>
+									<input type="hidden" name="id" value="<%= oldInput.id %>" />
+								<% } %>
+							</div>
+
+							<div class="col-12 col-sm-12 col-md-4 p-3">
+								<% if (category) { %>
+									<div class="mt-3">
+										<label for="selectCat" class="form-label">Select Category</label>
+										<select class="form-select" id="selectCat" aria-label="Default select example" name="tag" multiple>
+										  <% category.forEach(i => { %>
+										    <option value="<%= i.id %>" <%= oldInput.tag && oldInput.tag.includes(i.id) ? 'selected' : '' %> > <%= i.name %> </option>
+										  <% }) %>
+										</select>
+									</div>
+								<% } %>
+
+								<div class="mt-5 mb-3">
+									<button type="submit" class="btn btn-primary w-100" id="subBtn">
+										Submit
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-1"></div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		let dataArray = '<%= JSON.stringify(oldInput) %>';
+		dataArray = dataArray.replace(/[\r\n]+/g, ' ');
+	</script>
+
+	<script>
+		// window.addEventListener('load', function () {
+			setTimeout(function() {
+		    	const loadingSpinner = document.getElementById('loadingSpinner');
+		    	loadingSpinner.style.display = 'none';
+			}, 2000);
+	    // });
+
+	    globalThis.document.addEventListener("DOMContentLoaded", function() {
+					setTimeout(function() {
+		        const alertElement = document.querySelector('.alert-danger');
+		        if (alertElement) {
+		            alertElement.style.display = 'none';
+		        }
+		    	}, 3000);
+
+            const oldInput = JSON.parse(dataArray.replace(/&#34;/g, '"'));
+
+            // console.log(oldInput);
+
+            const portraitDiv = globalThis.document.getElementById('portrait_div');
+
+            const videoDiv = globalThis.document.getElementById('v_div');
+            const vu1 = globalThis.document.getElementById('video-uploader');
+            const er1 = globalThis.document.getElementById('embed-responsive');
+
+            // const form = globalThis.document.getElementById('searchForm');
+						const submitButton = globalThis.document.getElementById('subBtn');
+            const spinner = document.getElementById('spinner-border');
+
+            let xhr = null;
+
+            const descriptionContainer1 = document.getElementById('exampleFormControlTextarea');
+            const descriptionContainer2 = document.getElementById('exampleFormControlDescription');
+
+        	const descriptionLines1 = descriptionContainer1.innerHTML.trim();
+					// console.log(descriptionLines1);
+					descriptionContainer1.textContent = descriptionLines1;
+
+					const descriptionLines2 = descriptionContainer2.innerHTML.trim();
+					// console.log(descriptionLines2);
+					descriptionContainer2.textContent = descriptionLines2;
+
+					globalThis.document.querySelectorAll('.upload-button').forEach(button => {
+	          button.addEventListener('click', function(e) {
+	            uploadVideo(this);
+	          });
+	        });
+
+	        globalThis.document.querySelectorAll('.upload-Pimage-btn').forEach(button => {
+	          button.addEventListener('click', function(e) {
+	            uploadPortraitImage(this);
+	          });
+	        });
+
+	        document.addEventListener("change", function (event) {
+	          if (event.target.matches(".file-input")) {
+	            const fileInput = event.target;
+	            const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling; // The third sibling is the file-name span
+
+	            // console.log(fileInput, fileNameDisplay);
+
+	            const file = fileInput.files[0];
+	            // console.log(file);
+	            if (file) {
+	              fileNameDisplay.textContent = file.name;
+	            } else {
+	              fileNameDisplay.textContent = "No file chosen";
+	            }
+	          }
+	        });
+
+	        function uploadPortraitImage(btn) {
+	          // console.log("portrait....");
+		        submitButton.style.display = 'none';
+		        btn.disabled = true;
+
+		        const formFile1 = globalThis.document.getElementById("formFileP");
+
+		        const file = formFile1.files[0];
+
+		        if (formFile1.files.length === 0) {
+		            alert('Please select a image to upload.');
+		            btn.disabled = false;
+		            submitButton.style.display = 'block';
+		            return;
+		        }
+
+		        else if (file) {
+		        	submitButton.style.display = 'block';
+		            // console.log(file.name);
+		            function isVideoExtension(extension) {
+		              const videoExtensions = [".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"];
+		              return videoExtensions.includes(extension.toLowerCase());
+		            }
+		            const extension = file.name.match(/\.([^\.]+)$/);
+
+		            if (extension) {
+		              const extractedExtension = extension[1].toLowerCase(); // Convert to lowercase for case-insensitive comparison
+		              const isVideo = isVideoExtension("." + extractedExtension); // Add dot prefix
+		              // console.log(isVideo);
+		              if (!isVideo) {
+		                alert('Please select a image to upload.');
+		                btn.disabled = false;
+		                // const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling; // The third sibling is the file-name span
+		                formFile1.value = "";
+		                return;
+		              }
+		            } else {
+		              console.log("No extension found");
+		            }
+		        }
+
+		        submitButton.style.display = 'none';
+
+		        const spinner = document.getElementById("spinner_subP");
+		        spinner.style.display = 'block';
+
+		        const formdata = new FormData();
+		        formdata.append("fileToUpload", file);
+
+		        const requestOptions = {
+		            method: "POST",
+		            body: formdata,
+		            redirect: "follow"
+		        };
+
+		        fetch("https://api.edugarciamovimiento.com/fitness/uploadImage.php", requestOptions)
+		            .then((response) => response.json())
+		            .then((result) => {
+		              // console.log(result);
+		              if (result.isSuccess == true) {
+		                spinner.style.display = 'none';
+		                btn.parentElement.style.display = 'none';
+                    // btn.disabled = false;
+		                globalThis.document.getElementById("formNameFileP").value = result.image;
+		                btn.parentElement.previousElementSibling.style.display = 'none';
+		                const showDiv = btn.parentElement.previousElementSibling.previousElementSibling;
+
+					        	const port_img = showDiv.querySelector("#portImg");
+
+					        	port_img.setAttribute("src", `https://api.edugarciamovimiento.com/fitness/uploads/${result.image}`);
+
+					        	showDiv.style.display = 'block';
+
+		                btn.parentElement.previousElementSibling.previousElementSibling.style.display = 'block';
+		                btn.parentElement.parentElement.style.marginBottom = '50px';
+		                submitButton.style.display = 'block';
+
+		                const formdata2 = new FormData();
+                    formdata2.append("img_url", `https://api.edugarciamovimiento.com/fitness/uploads/${result.image}`);
+                    formdata2.append("width", "1200");
+                    formdata2.append("height", "630");
+
+                    const requestOptions = {
+                      method: "POST",
+                      body: formdata2,
+                      redirect: "follow"
+                    };
+
+                    fetch("https://api.edugarciamovimiento.com/fitness/ufi.php", requestOptions)
+                      .then((response) => response.json())
+                      .then((result) => {
+                        //console.log(result);
+                        spinner.style.display = 'none';
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                        return;
+                      });
+		              }
+		              else {
+		                alert(result.errorMsg);
+		                btn.disabled = false;
+		                file.value = '';
+		                spinner.style.display = 'none';
+		                return;
+		              }
+		            })
+		            .catch((error) => console.error(error));
+        	}
+
+        	function uploadVideo(btn) {
+          		submitButton.style.display = 'none';
+          		btn.disabled = true;
+
+          		const videoIframe = document.querySelector("#embed-responsive");
+          		const fileInput = document.querySelector("#movieFile");
+          		const videoUploader = document.querySelector("#video-uploader");
+          		const progressContainer = document.getElementById('progress-container');
+  						const progressBar = document.getElementById('upload-progress');
+  						const progressText = document.getElementById('progress-text');
+
+  						const up_vid_div = document.getElementById('up_vid_div');
+
+          		// console.log(videoIframe);
+
+          		videoIframe.style.display = "none"; 
+
+          		const file = fileInput.files[0];
+          		// console.log(file);
+
+		        	if (fileInput.files.length === 0) {
+		            alert('Please select a video to upload.');
+		            btn.disabled = false;
+		            submitButton.style.display = 'block';
+		            return;
+		        	}
+
+			        else if (file) {
+			        	submitButton.style.display = 'block';
+			            // console.log(file.name);
+			            function isVideoExtension(extension) {
+			              const videoExtensions = [".mp4", ".avi", ".wmv", ".mov", ".mkv", ".flv", ".webm", ".3gp", ".ogv", ".mpeg", ".mpg", ".divx", ".vob"];
+			              return videoExtensions.includes(extension.toLowerCase());
+			            }
+			            const extension = file.name.match(/\.([^\.]+)$/);
+
+			            if (extension) {
+			              const extractedExtension = extension[1].toLowerCase(); // Convert to lowercase for case-insensitive comparison
+			              const isVideo = isVideoExtension("." + extractedExtension); // Add dot prefix
+			              // console.log(isVideo);
+			              if (!isVideo) {
+			                alert('Please select a video to upload.');
+			                btn.disabled = false;
+			                const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling; // The third sibling is the file-name span
+			                fileNameDisplay.textContent = "No file chosen";
+			                return;
+			              }
+			            } else {
+			              console.log("No extension found");
+			            }
+			        }
+            
+	            const video = document.createElement('video'); // Create a temporary video element
+	        
+			        // Create a URL for the video file and set it as the source for the video element
+			        const url = URL.createObjectURL(file);
+			        video.src = url;
+
+			        // Wait for the video's metadata (duration) to load
+			        video.onloadedmetadata = function() {
+		            const duration = Math.floor(video.duration); // Get the video duration in seconds
+		          
+		            // console.log(duration);
+		            document.getElementById('video_length').value = duration;
+		            // document.getElementById('videoDuration').textContent = `Video duration: ${duration.toFixed(2)} seconds`;
+		        	};
+
+			        submitButton.style.display = 'none';
+
+			        const fCode = document.getElementById("fileCode");
+
+			        const spinner = document.getElementById("spinner");
+			        spinner.style.display = 'block';
+
+			        const formdata = new FormData();
+			        formdata.append("video", file);
+
+
+			        xhr = new XMLHttpRequest();
+
+		        	xhr.upload.addEventListener('progress', function(event) {
+                // console.log(event);
+                if (event.lengthComputable) {
+                  const loaded = Number(event.loaded);
+                  const total = Number(event.total);
+                  const percentComplete = Math.round((loaded / total) * 100);
+                  // const percentComplete = Math.round((event.loaded / event.total) * 100);
+                  // console.log((event.loaded / event.total).toFixed(20));
+                  // console.log(`Loaded: ${loaded}, Total: ${total}, Percent: ${percentComplete}`);
+                  progressBar.value = percentComplete;
+                  progressText.textContent = `${percentComplete}%`;
+                  progressContainer.style.display = 'block';
+                }
+            	});
+
+            	xhr.addEventListener('load', function() {
+                progressContainer.style.display = 'none';
+                if (xhr.status === 200) {
+                  const result = JSON.parse(xhr.responseText);
+                  // console.log(result);
+                  if (result.isSuccess) {
+                      const filecode = result.video;
+                      fCode.value = filecode;
+
+                      spinner.style.display = 'none';
+
+                      if (filecode) {
+                          videoUploader.style.display = 'none';
+                          up_vid_div.style.display = "block";
+                          submitButton.style.display = 'block';
+                          btn.disabled = false;
+
+                          // console.log(filecode);
+
+                          setTimeout(() => {
+                            up_vid_div.style.display = "none";
+                            videoIframe.style.display = "block";
+
+                            const videoTag = videoIframe.querySelector('.videoDiv');
+
+                            videoTag.setAttribute('src', `https://api.edugarciamovimiento.com/fitness/uploads/${filecode}`);
+                            
+                            videoTag.load(); // Load the new video source
+
+                           //  videoTag.addEventListener('loadedmetadata', () => {
+                           //     const duration = videoTag.duration; // duration in seconds
+                           //     document.getElementById('video_length').value = duration;
+                           //     // console.log(`Video Duration: ${duration} seconds`);
+                           // });
+                        	}, 1000);
+                      } 
+                      else {
+                          alert(`Unable to upload ${file.name}.`);
+                          const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling;
+                          fileNameDisplay.textContent = "No file chosen";
+                          submitButton.style.display = 'none';
+                          spinner.style.display = 'none';
+                          btn.disabled = false;
+                      }
+                  } 
+
+                  else {
+                      alert(`Unable to upload ${file.name}.`);
+                      const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling;
+                      fileNameDisplay.textContent = "No file chosen";
+                      btn.disabled = false;
+                      spinner.style.display = 'none';
+                  }
+                }
+            	});
+
+            	xhr.addEventListener('error', function() {
+                alert('An error occurred while uploading the video.');
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            	});
+
+            	xhr.open('POST', 'https://api.edugarciamovimiento.com/fitness/uploadVideo.php', true);
+            	xhr.send(formdata);
+        	}
+
+        	if (oldInput.portrait_image !== '') {
+        		// portraitDiv.style.marginTop = '50px';
+        		// portraitDiv.style.border = '2px solid red';
+            	const firstDiv = portraitDiv.querySelectorAll('div')[0];
+							const secondDiv = portraitDiv.querySelectorAll('div')[2];
+							const thirdDiv = portraitDiv.querySelectorAll('div')[3];
+
+							const button = thirdDiv.querySelector('i.fa-cloud-arrow-up').parentElement;
+							const port_img = firstDiv.querySelector("#portImg");
+
+							// console.log(firstDiv, secondDiv);
+							// console.log(thirdDiv, button);
+							//console.log(port_img);
+
+						    port_img.setAttribute("src", `https://api.edugarciamovimiento.com/fitness/uploads/${oldInput.portrait_image}`);
+
+							firstDiv.style.display = 'block';
+							secondDiv.style.display = 'none';
+							button.disabled = false;
+         	}
+
+         	if (oldInput.fileCode !== '') {
+         		// console.log(oldInput.video);
+         		
+         			vu1.style.display = 'none';
+            	er1.style.display = 'block';
+
+            	//console.log(videoDiv.querySelectorAll('div')[6],videoDiv.querySelectorAll('div')[6].querySelector('.upload-button'));
+
+            	const thirdVideoDiv = videoDiv.querySelectorAll('div')[6].querySelector('.upload-button');
+
+            	//console.log(thirdVideoDiv);
+
+							thirdVideoDiv.disabled = true;
+
+							const videoTag = er1.querySelector('.videoDiv');
+          		vu1.style.display = 'none';
+
+          		videoTag.setAttribute('src', `https://api.edugarciamovimiento.com/fitness/uploads/${oldInput.fileCode}`);
+         	}
+
+         	globalThis.document.querySelectorAll('.delete-P-button').forEach(button => {
+		        button.addEventListener('click', function(e) {
+		            deletePortraitImage(this);
+		        });
+		    	})
+
+			    globalThis.document.querySelectorAll('.delete-button').forEach(button => {
+			        button.addEventListener('click', function(e) {
+			            deleteVideo(this);
+			        });
+			    });
+
+			    function deletePortraitImage(btn) {
+			        // btn.disabled = true;
+			        // console.log(btn, btn.previousElementSibling, globalThis.document.getElementById("formFileP"), 
+	              	// globalThis.document.getElementById("formFileP").value);
+			        globalThis.document.getElementById("formFileP").value = '';
+			        globalThis.document.getElementById("formNameFileP").value = '';
+			        btn.previousElementSibling.style.display = 'block';
+			        btn.previousElementSibling.disabled = false;
+			        btn.parentElement.previousElementSibling.style.display = 'block';
+			        btn.parentElement.previousElementSibling.previousElementSibling.style.display = 'none';
+			    }
+
+			    function deleteVideo(btn) {
+			        try {
+			          // console.log(btn);
+	              btn.previousElementSibling.disabled = false;
+			          // console.log(btn.parentElement.previousElementSibling.previousElementSibling);
+			          document.getElementById('video_length').value = '';
+
+				        if (xhr) {
+							    xhr.abort(); // Abort the ongoing XHR request
+							    xhr = null; // Clear the XHR variable
+							    alert('Upload cancelled.');
+
+							    const progressContainer = document.getElementById('progress-container');
+							    const progressBar = document.getElementById('upload-progress');
+							    const progressText = document.getElementById('progress-text');
+							    progressBar.value = 0;
+							    progressText.textContent = '0%';
+							    progressContainer.style.display = 'none';
+
+							    const spinner = document.getElementById('spinner');
+							    spinner.style.display = 'none';
+
+							    const fileInput = document.querySelector('#movieFile');
+							    const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling;
+							    fileNameDisplay.textContent = "No file chosen";
+
+							    submitButton.style.display = 'block';
+							    btn.disabled = false;
+								}
+
+			            const videoIframe = document.querySelector("#embed-responsive");
+			            const uploadButton = btn.previousElementSibling;
+			            const videoUploader = document.querySelector("#video-uploader");
+
+			            const iframeElement = document.querySelector(".videoDiv");
+			            // console.log(iframeElement.getAttribute("src"));
+			            const iUrl = iframeElement.getAttribute("src");
+	                
+	                	const fileName = document.getElementById("file_name");
+			            fileName.textContent = 'No file chosen';
+	                
+	                	document.getElementById("movieFile").value = '';
+
+			            // console.log(btn.parentElement.nextElementSibling);
+	                
+	                	// console.log(videoIframe, uploadButton, videoUploader);
+
+			            // console.log(iUrl, iUrl !== '');
+
+			           	if (iUrl !== '') {
+			              	const fCode = document.getElementById("fileCode").value;
+
+			              	// console.log(fCode);
+
+			                videoIframe.style.display = 'none';
+			                videoUploader.style.display = 'block';
+
+			                document.getElementById("fileCode").value = '';
+
+			                // console.log(uploadButton);
+			                uploadButton.disabled = false;
+
+			                const fileName = document.getElementById("file_name");
+			                fileName.textContent = 'No file chosen';
+
+			                submitButton.style.display = 'block';
+			            }
+
+			            else {
+			              // uploadButton.disabled = true;
+			              // btn.disabled = true;
+			              // submitButton.style.display = 'none';
+			              videoUploader.style.display = 'block';
+			              videoIframe.style.display = 'none';
+			            }
+			        }
+
+			        catch (error) {
+			            // Handle any errors that occur during data retrieval or video deletion
+			            console.error('Error:', error.message);
+			        }
+			    }
+
+			    /* document.getElementById('selectCat').addEventListener('change', function() {
+		        const selectedOption = this.options[this.selectedIndex];
+		        const selectedName = selectedOption.getAttribute('data-name'); // Get the corresponding name
+		        
+		        // Set the value of the hidden input to the selected name
+		        document.getElementById('categoryName').value = selectedName;
+		    	}); */
+		})
+	</script>
+
+</body>
+
+<%- include("./includes/end.ejs"); %>

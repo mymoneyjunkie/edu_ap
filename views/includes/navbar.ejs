@@ -1,0 +1,90 @@
+<nav class="navbar navbar-dark bg-primary fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/v1/home">FITNESS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-start text-bg-primary" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">WELCOME!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/v1/home">
+              <i class="fa-solid fa-house me-3" style="color: white;"></i>Home
+            </a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-file-pen me-3" style="color: white;"></i> Category
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <a class="dropdown-item" href="/v1/category">
+                  <i class="fa-solid fa-table me-3" style="color: white;"></i>- List Category
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/v1/category">
+                  <i class="fa-solid fa-plus me-3" style="color: white;"></i>- Add Category
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-file-pen me-3" style="color: white;"></i> Add Modules
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <a class="dropdown-item" href="/v1/modules">
+                  <i class="fa-solid fa-table me-3" style="color: white;"></i>- List Modules
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/v1/add">
+                  <i class="fa-solid fa-plus me-3" style="color: white;"></i>- Add Modules
+                </a>
+              </li>
+
+              <!-- <li><a class="dropdown-item" href="/v1/add2/?id=0">Add Lessons</a></li> -->
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-file-pen me-3" style="color: white;"></i> Trending
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <a class="dropdown-item" href="/v1/trending">
+                  <i class="fa-solid fa-table me-3" style="color: white;"></i>- List Trending
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/v1/modules">
+                  <i class="fa-solid fa-plus me-3" style="color: white;"></i>- Add Trending
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="/logout">
+              <i class="fa-solid fa-power-off me-3" style="color: white;"></i>Logout
+            </a>
+          </li>
+        </ul>
+        
+        <!-- <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,431 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/add.css">
+
+<body>
+	<header>
+		<%- include("./includes/navbar.ejs"); %>
+	</header>
+
+	<!-- <div class="loading-spinner" id="loadingSpinner">
+		<i class="fa-solid fa-spinner logoSp" style="color: red;"></i>
+	    <div class="spinner"></div>
+	</div> -->
+
+	<section>
+		<div class="container-fluid addDiv1 border">
+			<div class="row">
+				<div class="col-12 text-center">
+		          	<% if(errorMessage) { %>
+		            	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		          	<% } %>
+		        </div>
+
+				<div class="col-12 col-sm-12 mb-3 text-center">
+					<h3>ADD MOVIES</h3>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+
+				<div class="col-12 col-sm-12 col-lg-8">
+					<form action="/v1/add" method="POST">
+						<div class="part_one" id="part_one_template">
+							<!-- title -->
+							<div class="mb-3">
+							    <label for="exampleInputTitle" class="form-label">Title</label>
+							    <input type="text" class="form-control" id="exampleInputTitle" name="title" placeholder="e.g., The Avengers">
+							</div>
+
+							<!-- description -->
+							<div class="mb-3">
+							  	<label for="exampleFormControlTextarea" class="form-label">Description</label>
+							  	<textarea class="form-control" id="exampleFormControlTextarea" name="description" rows="3"></textarea>
+							</div>
+
+							<!-- logo -->
+							<div class="mb-3" id="logo_div">
+					            <div style="display: none;">
+					                <label for="formFilel_0" class="form-label">Logo</label>
+					                <div>
+					                	<img src="" class="img-thumbnail" alt="..." width="300" height="300" id="logoImg" loading="lazy">
+					                </div>
+					            </div>
+					            <div>
+					                <label for="formFile" class="form-label">logo</label>
+					                <input class="form-control" type="file" id="formFilel_0" accept="image/*">
+					                <input type="hidden" name="logo" id="formNameFilel_0" value="<%= oldInput.logo %>">
+					            </div>
+					            <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex align-items-center justify-content-between">
+					                <button type="button" class="btn upload-limage-btn border-0" data-logo-id="0">
+					                    <i class="fa-solid fa-cloud-arrow-up"></i>
+					                </button>
+						            <button type="button" class="btn delete-l-button" data-logo-id="0">
+					                    <i class="fa-solid fa-trash" style="color: red;"></i>
+					                </button>
+					                <div id="spinner_subl_0" class="spinner-border" role="status" style="display: none;">
+					                    <span class="sr-only">Loading...</span>
+					                </div>
+					            </div>
+					        </div>
+
+					        <!-- portrait image -->
+							<div class="mb-3" id="portrait_div">
+					            <div style="display: none;">
+					                <label for="formFilep_0" class="form-label">Image</label>
+					                <div>
+					                	<img src="" class="img-thumbnail" alt="..." width="300" height="300" id="portImg" loading="lazy">
+					                </div>
+					            </div>
+					            <div>
+					                <label for="formFile" class="form-label">Image</label>
+					                <input class="form-control" type="file" id="formFileP_0" accept="image/*">
+					                <input type="hidden" name="portrait_image" id="formNameFileP_0" value="<%= oldInput.portrait_image %>">
+					            </div>
+					            <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex align-items-center justify-content-between">
+					                <button type="button" class="btn upload-Pimage-btn border-0" data-p-id="0">
+					                    <i class="fa-solid fa-cloud-arrow-up"></i>
+					                </button>
+						            <button type="button" class="btn delete-P-button" data-p-id="0">
+					                    <i class="fa-solid fa-trash" style="color: red;"></i>
+					                </button>
+					                <div id="spinner_subP_0" class="spinner-border" role="status" style="display: none;">
+					                    <span class="sr-only">Loading...</span>
+					                </div>
+					            </div>
+					        </div>
+
+					        <!-- video -->
+					        <div class="mb-3" id="v_div">
+					         	<div class="col-12">
+					                <label for="" class="form-label">Video</label>
+					         	</div>
+						        <div class="col-12 col-sm-6 col-md-8 col-lg-5 border text-sm-center p-0" id="embed-responsive_0" style="display: none;">
+						            <div class="embed-responsive embed-responsive-16by9">
+						              	<video src="" class="videoDiv object-fit-contain" controls muted autoplay></video>
+						            </div>
+					         	</div>
+						        <div class="col-12 col-sm-6 col-md-8 col-lg-5 video-uploader" id="video-uploader">
+						            <label class="file-label" for="movieFile" id="fileLabel">
+						              <i class="fa-solid fa-file-video"></i> Choose Video
+						            </label>
+						            <input type="file" id="movieFile_0" class="file-input" accept="video/*" />
+						            <input type="hidden" class="border-0" id="episode_Id" value="">
+						            <input type="hidden" id="fileCode_0" name="fileCode" class="custom-file-input" value="<%= oldInput.fileCode %>">
+						            <span id="file_name_0" name="file_name" class="file-name">No file chosen</span>
+						        </div>
+						        <div class="col-12 col-sm-6 col-md-4 col-lg-5 text-start d-flex justify-content-between align-items-center" style="word-wrap: break-word;">
+						            <p class="text-break"></p>
+						        </div>
+						        <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex justify-content-between">
+						            <div id="spinner_0" class="spinner-border" role="status" style="display: none;">
+						              <span class="sr-only">Loading...</span>
+						            </div>
+						            <button type="button" class="btn upload-button border-0" data-v-id="0">
+						              <i class="fa-solid fa-cloud-arrow-up"></i>
+						            </button>
+							        <button type="button" class="btn delete-button" data-v-id="0">
+					                  <i class="fa-solid fa-trash" style="color: red;"></i>
+					                </button>
+						            <!-- Subtitle Button -->
+						            <button type="button" class="btn subtitle-button border-0 d-none" data-tvshow-id="">
+						              <i class="fa-solid fa-closed-captioning"></i>
+						            </button>
+						        </div>
+					        </div>
+
+					        <div id="progress-container" style="display: none;">
+								<label for="upload-progress">Upload Progress:</label>
+								<progress id="upload-progress" value="0" max="100"></progress>
+								<span id="progress-text">0%</span>
+							</div>
+						</div>
+
+						<div id="add_more"></div>
+
+						<button type="button" class="btn btn-secondary add_more_btn">
+							Add More Episodes
+						</button>
+
+						<button type="submit" class="btn btn-primary">
+							Submit
+						</button>
+					</form>
+				</div>
+
+				<div class="col-12 col-sm-12 col-lg-2"></div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		let edit = <%= edit %>;
+		let editing = <%= editing %>;
+	</script>
+
+	<script>
+	    globalThis.document.addEventListener("DOMContentLoaded", function() {
+	    	setTimeout(function() {
+                const alertElement = document.querySelector('.alert-danger');
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 3000);
+
+	    	const add_more_btn = globalThis.document.querySelector('.add_more_btn');
+	    	const add_more_div = globalThis.document.querySelector('#add_more');
+		    let counter = 0;
+
+	    	if (edit == false && editing == false) {
+		    	add_more_btn.addEventListener('click', (e) => {
+					counter++;
+
+		    		const resultsHTML = `
+		    			<div class="mt-5" id="episode_${counter}">
+		    				<!-- add new -->
+		    				<div class="mb-3 pt-1 pb-1 pe-2 ps-2 d-flex justify-content-between align-items-center bg-dark" style="border-radius: 10px;">
+		    					<div class="text-white" style="font-weight: bold;">New Episode</div>
+		    					<div class="text-white">
+		    						<button type="button" class="btn delete_ep_button" data-del-id="${counter}">
+							            <i class="fa-solid fa-trash" style="color: red;"></i>
+							        </button>
+		    					</div>
+		    				</div>
+
+			    			<!-- title -->
+							<div class="mb-3">
+								<label for="exampleInputTitle" class="form-label">Title</label>
+								<input type="text" class="form-control" id="exampleInputTitle" name="title" placeholder="e.g., The Avengers">
+							</div>
+
+							<!-- description -->
+							<div class="mb-3">
+								<label for="exampleFormControlTextarea" class="form-label">Description</label>
+								<textarea class="form-control" id="exampleFormControlTextarea" name="description" rows="3"></textarea>
+							</div>
+
+								<!-- logo -->
+								<div class="mb-3" id="logo_div">
+						            <div style="display: none;">
+						                <label for="formFilel_${counter}" class="form-label">Logo</label>
+						                <div>
+						                	<img src="" class="img-thumbnail" alt="..." width="300" height="300" id="logoImg" loading="lazy">
+						                </div>
+						            </div>
+						            <div>
+						                <label for="formFile" class="form-label">logo</label>
+						                <input class="form-control" type="file" id="formFilel_${counter}" accept="image/*">
+						                <input type="hidden" name="logo" id="formNameFilel_${counter}" value="<%= oldInput.logo %>">
+						            </div>
+						            <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex align-items-center justify-content-between">
+						                <button type="button" class="btn upload-limage-btn border-0" data-logo-id="${counter}">
+						                    <i class="fa-solid fa-cloud-arrow-up"></i>
+						                </button>
+							            <button type="button" class="btn delete-l-button" data-logo-id="${counter}">
+						                    <i class="fa-solid fa-trash" style="color: red;"></i>
+						                </button>
+						                <div id="spinner_subl_${counter}" class="spinner-border" role="status" style="display: none;">
+						                    <span class="sr-only">Loading...</span>
+						                </div>
+						            </div>
+						        </div>
+
+						        <!-- portrait image -->
+								<div class="mb-3" id="portrait_div">
+						            <div style="display: none;">
+						                <label for="formFilep_${counter}" class="form-label">Image</label>
+						                <div>
+						                	<img src="" class="img-thumbnail" alt="..." width="300" height="300" id="portImg" loading="lazy">
+						                </div>
+						            </div>
+						            <div>
+						                <label for="formFile" class="form-label">Image</label>
+						                <input class="form-control" type="file" id="formFileP_${counter}" accept="image/*">
+						                <input type="hidden" name="portrait_image" id="formNameFileP_${counter}" value="<%= oldInput.portrait_image %>">
+						            </div>
+						            <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex align-items-center justify-content-between">
+						                <button type="button" class="btn upload-Pimage-btn border-0" data-p-id="${counter}">
+						                    <i class="fa-solid fa-cloud-arrow-up"></i>
+						                </button>
+							            <button type="button" class="btn delete-P-button" data-p-id="${counter}">
+						                    <i class="fa-solid fa-trash" style="color: red;"></i>
+						                </button>
+						                <div id="spinner_subP_${counter}" class="spinner-border" role="status" style="display: none;">
+						                    <span class="sr-only">Loading...</span>
+						                </div>
+						            </div>
+						        </div>
+
+						        <!-- video -->
+						        <div class="mb-3" id="v_div">
+						         	<div class="col-12">
+						                <label for="" class="form-label">Video</label>
+						         	</div>
+							        <div class="col-12 col-sm-6 col-md-8 col-lg-5 border text-sm-center p-0" id="embed-responsive_${counter}" style="display: none;">
+							            <div class="embed-responsive embed-responsive-16by9">
+							              	<video src="" class="videoDiv object-fit-contain" controls muted autoplay></video>
+							            </div>
+						         	</div>
+							        <div class="col-12 col-sm-6 col-md-8 col-lg-5 video-uploader" id="video-uploader">
+							            <label class="file-label" for="movieFile" id="fileLabel">
+							              <i class="fa-solid fa-file-video"></i> Choose Video
+							            </label>
+							            <input type="file" id="movieFile_${counter}" class="file-input" accept="video/*" />
+							            <input type="hidden" class="border-0" id="episode_Id" value="">
+							            <input type="hidden" id="fileCode_${counter}" name="fileCode" class="custom-file-input" value="<%= oldInput.fileCode %>">
+							            <span id="file_name_${counter}" name="file_name" class="file-name">No file chosen</span>
+							        </div>
+							        <div class="col-12 col-sm-6 col-md-4 col-lg-5 text-start d-flex justify-content-between align-items-center" style="word-wrap: break-word;">
+							            <p class="text-break"></p>
+							        </div>
+							        <div class="col-12 col-sm-12 col-md-12 col-lg-2 d-flex justify-content-between">
+							            <div id="spinner_${counter}" class="spinner-border" role="status" style="display: none;">
+							              <span class="sr-only">Loading...</span>
+							            </div>
+							            <button type="button" class="btn upload-button border-0" data-v-id="${counter}">
+							              <i class="fa-solid fa-cloud-arrow-up"></i>
+							            </button>
+								        <button type="button" class="btn delete-button" data-v-id="${counter}">
+						                  <i class="fa-solid fa-trash" style="color: red;"></i>
+						                </button>
+							            <!-- Subtitle Button -->
+							            <button type="button" class="btn subtitle-button border-0 d-none" data-tvshow-id="">
+							              <i class="fa-solid fa-closed-captioning"></i>
+							            </button>
+							        </div>
+						        </div>
+
+							<div id="progress-container" style="display: none;">
+								<label for="upload-progress">Upload Progress:</label>
+								<progress id="upload-progress" value="0" max="100"></progress>
+								<span id="progress-text">0%</span>
+							</div>
+						</div>
+					`;
+
+					add_more_div.insertAdjacentHTML('beforeend', resultsHTML);
+
+					const delete_ep_button = document.querySelectorAll(".delete_ep_button");
+
+					delete_ep_button.forEach(btn => {
+						btn.addEventListener('click', function(e) {
+							// console.log(btn, this);
+							const delId = this.getAttribute('data-del-id');
+
+							// console.log(delId);
+		        
+					        // Find the corresponding episode section to remove
+					        const episodeSection = document.querySelector(`#episode_${delId}`);
+					        
+					        // Remove the episode section from the DOM if it exists
+					        if (episodeSection) {
+					            episodeSection.remove();
+					        }
+						})
+					})
+
+					globalThis.document.querySelectorAll('.upload-limage-btn')
+					.forEach(button => {
+				        button.addEventListener('click', function(e) {
+				            const movieShowId = this.getAttribute('data-logo-id');
+				            // console.log(movieShowId, this);
+				            if (movieShowId != 0) {
+				            	upload_logo(movieShowId, this);
+				            }
+				        });
+				    });
+
+				    globalThis.document.querySelectorAll('.upload-Pimage-btn')
+					.forEach(button => {
+			          	button.addEventListener('click', function(e) {
+			            	const movieShowId = this.getAttribute('data-p-id');
+			            	// console.log(movieShowId, this);
+				            if (movieShowId != 0) {
+			            		upload_image(movieShowId, this);
+			            	}
+			          	});
+			        });
+
+			        globalThis.document.querySelectorAll('.upload-button')
+					.forEach(button => {
+			          	button.addEventListener('click', function(e) {
+			            	const movieShowId = this.getAttribute('data-v-id');
+			            	// console.log(movieShowId, this);
+				            if (movieShowId != 0) {
+			            		upload_video(movieShowId, this);
+			            	}
+			          	});
+			        });
+				})
+
+				// Add Event Listener to logo image upload-limage-btn
+				globalThis.document.querySelectorAll('.upload-limage-btn')
+				.forEach(button => {
+		          	button.addEventListener('click', function(e) {
+		            	const movieShowId = this.getAttribute('data-logo-id');
+		            	// console.log(movieShowId, this);
+		            	if (movieShowId == 0) {
+		            		upload_logo(movieShowId, this);
+		            	}
+		          	});
+		        });
+
+		        globalThis.document.querySelectorAll('.upload-Pimage-btn')
+				.forEach(button => {
+		          	button.addEventListener('click', function(e) {
+		            	const movieShowId = this.getAttribute('data-p-id');
+		            	// console.log(movieShowId, this);
+		            	if (movieShowId == 0) {
+		            		upload_image(movieShowId, this);
+		            	}
+		          	});
+		        });
+
+		        globalThis.document.querySelectorAll('.upload-button')
+				.forEach(button => {
+			       	button.addEventListener('click', function(e) {
+			        	const movieShowId = this.getAttribute('data-v-id');
+			        	// console.log(movieShowId, this);
+			        	if (movieShowId == 0) {
+			        		upload_video(movieShowId, this);
+			        	}
+			       	});
+				});
+		    }
+
+		    function upload_logo(id, btn) {
+		    	console.log("logo...", id, btn);
+		    }
+
+		    function upload_image(id, btn) {
+		    	console.log("image...", id, btn);
+		    }
+
+		    function upload_video(id, btn) {
+		    	console.log("video...", id, btn);
+		    }
+
+			document.addEventListener("change", function (event) {
+		        if (event.target.matches(".file-input")) {
+		            const fileInput = event.target;
+		            const fileNameDisplay = fileInput.nextElementSibling.nextElementSibling.nextElementSibling; // The third sibling is the file-name span
+
+		            // console.log(fileInput, fileNameDisplay);
+
+		            const file = fileInput.files[0];
+		            // console.log(file);
+		            if (file) {
+		              fileNameDisplay.textContent = file.name;
+		            } else {
+		              fileNameDisplay.textContent = "No file chosen";
+		            }
+		        }
+		    });
+		})
+	</script>
+</body>
+
+<%- include("./includes/end.ejs"); %>

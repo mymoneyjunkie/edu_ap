@@ -1,0 +1,80 @@
+<%- include("./includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/login.css">
+
+<body>
+	<div class="loading-spinner" id="loadingSpinner">
+	    <div class="spinner"></div>
+	</div>
+
+	<section>
+		<div class="container-fluid border-0 p-0" style="margin-top: 70px;">
+			<div class="row justify-content-center">
+		        <div class="col-12 text-center">
+		          	<% if(errorMessage) { %>
+		            	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		          	<% } %>
+		        </div>
+
+				<div class="col-12 col-lg-2"></div>
+
+				<div class="col-12 col-lg-8 p-4" id="subForm">
+            		<h4 class="text-center">Sign In</h4>
+					<form action="/" method="POST" novalidate>
+					  <div class="mb-3">
+					    <label for="exampleInputEmail1" class="form-label">Email</label>
+					    <input 
+					    	type="email" 
+					    	class="form-control" 
+					    	name="email" 
+					    	id="exampleInputEmail1" 
+					    	aria-describedby="emailHelp"
+                            value="<%= oldInput.email %>" 
+					    	required
+					    >
+					  </div>
+					  <div class="mb-3">
+					    <label for="exampleInputPassword1" class="form-label">Password</label>
+					    <input 
+					    	type="password" 
+					    	class="form-control" 
+					    	name="password" 
+					    	id="exampleInputPassword1" 
+					    	value="Abcd@1234"
+					    	required
+					    >
+					  </div>
+					  <div class="mb-3">
+					  	<button type="submit" class="btn btn-primary">Submit</button>
+					  </div>
+					</form>
+				</div>
+
+				<div class="col-12 col-lg-2"></div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container" style="height: 100px;"></div>
+	</section>
+
+	<script>
+		setTimeout(function() {
+		   	const loadingSpinner = document.getElementById('loadingSpinner');
+		   	loadingSpinner.style.display = 'none';
+		}, 2000);
+
+		globalThis.document.addEventListener("DOMContentLoaded", function() {
+			setTimeout(function() {
+		        const alertElement = document.querySelector('.alert-danger');
+		        if (alertElement) {
+		            alertElement.style.display = 'none';
+		        }
+		    }, 3000);
+		})
+	</script>
+
+</body>
+
+<%- include("./includes/end.ejs"); %>

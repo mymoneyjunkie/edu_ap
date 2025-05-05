@@ -1,0 +1,42 @@
+[
+  {
+    "product_title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "product_image": ["https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg", "", "", "", ""],
+    "product_price": 109.95,
+    "product_features": ["Always-on internet with 4G LTE and Dual band Wi-Fi (2.4GHz and 5.0 GHz)", "990gms light & ultra-compact makes it easy to carry anywhere", "Anti-glare HD Display & Stereo Speakers helps you to work outdoors"],
+    "product_description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+    "rating": 3.9,
+    "reviews": 120,
+    "date": ""
+  },
+  {
+    "product_title": "",
+    "product_image": ["", "", "", "", ""],
+    "product_price": 20,
+    "product_features": [],
+    "product_description": "",
+    "rating": 4.3,
+    "reviews": 189,
+    "date": ""
+  },
+  {
+    "product_title": "",
+    "product_image": ["", "", "", "", ""],
+    "product_price": 20,
+    "product_features": [],
+    "product_description": "",
+    "rating": 2.7,
+    "reviews": 200,
+    "date": ""
+  },
+  {
+    "product_title": "",
+    "product_image": ["", "", "", "", ""],
+    "product_price": 20,
+    "product_features": [],
+    "product_description": "",
+    "rating": 4.6,
+    "reviews": 231,
+    "date": ""
+  }
+]
